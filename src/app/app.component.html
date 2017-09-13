@@ -1,0 +1,107 @@
+<!-- Page Header -->
+<div class="page-header">
+  <h2>TO-DO Liste</h2>
+  <p>Hier hat man die Möglichkeit eine TODO Liste zu erstellen und zu bearbeiten.</p>
+  <button class="btn btn-primary" style="margin-left: 10px; margin-bottom: 10px; background-color:#FFFFFF; color:#0066FF" (click)="open(content)">Neue Aufgabe erstellen</button>
+</div>
+
+<!-- Add a new Task Popup -->
+<template #content let-c="close" let-d="close">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h4 class="modal-title">Neue Aufgabe erstellen</h4>
+      <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-8" style="padding-bottom: 10px">Aufgabe:</div>
+        <div class="col-md-4" style="padding-bottom: 10px">Ziel Datum:</div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <input class="form-control" placeholder="Deine Aufgabe">
+        </div>
+        <div class="col-md-4">
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+            <button class="input-group-addon" (click)="d.toggle()" type="button">
+                  <img src="http://wfarm3.dataknet.com/static/resources/icons/set114/7b6a184c.png" style="width: 1.2rem; height: 1.2rem; cursor: pointer;"/>
+                </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="c('Save click')">Speichern</button>
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Prgressbar -->
+<div class="row" style="margin-left: 10px; margin-top: 150px">
+  <hr>
+  <div class="col-md-2">Fortschritt:</div>
+  <div class="col-md-10"></div>
+</div>
+
+<div class="row" style="margin-right: 10px; margin-left: 10px">
+  <div class="col-md-12">
+    <ngb-progressbar showValue="true" [value]="progressBar" type="success" ></ngb-progressbar>
+  </div>
+</div>
+
+<!-- Task list -->
+<hr>
+<div class="row" style="margin-left: 10px; margin-right: 10px">
+  <div class="col-md-6"><b>Aufgabe</b></div>
+  <div class="col-md-4"><b>Datum</b></div>
+  <div class="col-md-1"><b>Erledigt</b></div>
+</div>
+<div class="row">
+  <div class="col-md-12" style="overflow:auto; height: 80%">
+    <div class="list-group" style="margin-left: 10px; margin-right: 10px;">
+      <a class="list-group-item" *ngFor="let task of tasks">
+        <div class="row">
+          <div class="col-md-6">{{task.task}}</div>
+          <div class="col-md-4">{{task.date}}</div>
+          <div class="col-md-1">
+            <input #checkboxDone type="checkbox" [(ngModel)]="task.done" style="margin-left: 5px" (change)=checkboxChanged()>
+          </div>
+
+          <div class="col-md-1">
+            <img *ngIf="checkboxDone.checked; else notDoneYet" (click)=onDeleteClick(task) src="http://findicons.com/files/icons/1580/devine_icons_part_2/256/trash_recyclebin_empty_closed.png"
+              style="width: 1.5rem; height: 1.6rem; cursor: pointer; float:right; margin-left: 10px;" />
+            <img src="https://image.flaticon.com/icons/svg/61/61456.svg" style="width: 1.3rem; height: 1.3rem; cursor: pointer; float:right;"
+            />
+            <ng-template #notDoneYet>
+              <img (click)=open(deletePopup,task) src="http://findicons.com/files/icons/1580/devine_icons_part_2/256/trash_recyclebin_empty_closed.png"
+                style="width: 1.5rem; height: 1.6rem; cursor: pointer; float:right; margin-left: 10px;" />
+            </ng-template>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Popup -->
+<template #deletePopup let-c="close" let-d="close">
+  <div class="modal-content" style="width: 120%">
+    <div class="modal-header">
+      <h4 class="modal-title">Aufgabe löschen</h4>
+      <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+      <label style="position: center"> Sind Sie sicher das Sie diese nicht erledigte Aufgabe löschen möchten?</label>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="c('delete')">Löschen</button>
+      <button type="button" class="btn btn-secondary" (click)="c('abort')">Abbrechen</button>
+    </div>
+  </div>
+</template>

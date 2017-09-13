@@ -1,0 +1,29 @@
+h2 {
+    margin-left: 10px;
+    padding-top: 10px;
+}
+
+p {
+    margin-left: 10px;
+}
+
+.page-header {
+    color: white;
+    background-color: #0066FF;
+    min-width: 100%;
+    top: 0px;
+    position: fixed;
+    z-index: 10;
+}
+
+.modal-dialog
+{
+    max-width: 900px;
+}
+
+
+
+* {
+    font-family: Century Gothic;
+}
+
